@@ -3,6 +3,8 @@ import './App.css';
 
 import { useQuery } from 'urql';
 
+import Upvote from './components/Upvote';
+
 function App() {
   const [{fetching, data, error}] = useQuery({
     query: `
@@ -19,7 +21,19 @@ function App() {
   });
 
   return (
-    <pre>{JSON.stringify({fetching, data, error}, null, 2)}</pre>
+    // <pre>{JSON.stringify({fetching, data, error}, null, 2)}</pre>
+    <>
+    {fetching ? <div>Loading...</div> :
+        <ul>
+          {data.allPosts.map(post => (
+            <li key={post.id}>
+              <a href={post.url}>{post.title}</a> * <Upvote post={post} />
+            </li>
+          ))}
+        </ul>
+    }
+
+    </>
   );
 }
 
